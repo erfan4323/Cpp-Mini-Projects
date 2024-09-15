@@ -2,9 +2,11 @@
 
 Small projects that includes graphics
 
-
-
 > I intend to add more projects to this repository weekly, so check it once in a while :yellow_heart:
+> 
+> maybe star it? :star2:
+
+
 
 
 
