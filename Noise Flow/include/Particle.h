@@ -20,7 +20,7 @@ public:
 	Particle(int width, int height, int scale) :
 		width(width), height(height),
 		pos({(float) GetRandomValue(0, width), (float) GetRandomValue(0, height)}),
-		vel(GenerateRandomDirection()),
+		vel(Vector2RandomDirection()),
 		acc({0, 0}),
 		scale(scale),
 		maxSpeed(2),

@@ -9,7 +9,7 @@
 //----------------------------------------------------------------------------------
 
 //Generates a grayscale color 
-Color FillGrayScale(float value)
+Color Fill(float value)
 {
 	value = Clamp(value, 0.0f, 1.0f);
 
@@ -23,16 +23,16 @@ Color FillGrayScale(float value)
 //----------------------------------------------------------------------------------
 
 //Creates a 2D vector from a given angle 
-Vector2 FromAngle(float angle, Vector2* target = nullptr)
+Vector2 Vector2FromAngle(float angle)
 {
 	return Vector2{cosf(angle), sinf(angle)};
 }
 
 //Generates a random 2D direction vector 
-Vector2 GenerateRandomDirection()
+Vector2 Vector2RandomDirection()
 {
 	float angle = GetRandomValue(0, 360) * (PI / 180);
-	return FromAngle(angle);
+	return Vector2FromAngle(angle);
 }
 
 //Limits the magnitude of a vector to the specified maximum length

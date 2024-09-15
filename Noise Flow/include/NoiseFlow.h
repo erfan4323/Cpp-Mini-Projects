@@ -23,7 +23,7 @@ public:
 	Vector2 GenerateVector(float x, float y, float z) override
 	{
 		float angle = noise.noise(x, y, z) * TWO_PI * 5;
-		Vector2 vec = FromAngle(angle);
+		Vector2 vec = Vector2FromAngle(angle);
 		vec = Vector2SetMag(vec, 0.30);
 		return vec;
 	}
