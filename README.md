@@ -1,13 +1,14 @@
 # Cpp-Mini-Projects
 
 Small projects that includes graphics
-I intend to update this repo weekly so stay tuned
+
+
+
+> I intend to update this repo weekly so  stay tuned :yellow_heart:
 
 
 
 # Project list
-
-
 
 | Project      | Requirements         | Demo                                                                           |
 |:------------:|:--------------------:| ------------------------------------------------------------------------------ |
