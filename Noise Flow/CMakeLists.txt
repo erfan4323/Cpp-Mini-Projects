@@ -64,7 +64,7 @@ else()
 
 endif()
 
-target_sources("${CMAKE_PROJECT_NAME}" PRIVATE ${MY_SOURCES}   "include/PerlinNoise.h"   "include/NoiseFlow.h" "include/Particle.h" "include/VectorExt.h")
+target_sources("${CMAKE_PROJECT_NAME}" PRIVATE ${MY_SOURCES}   "include/PerlinNoise.h"   "include/NoiseFlow.h" "include/Particle.h" "include/rayutils.h")
 
 
 if(MSVC) # If using the VS compiler...

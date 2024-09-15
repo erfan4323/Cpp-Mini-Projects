@@ -2,7 +2,7 @@
 #include "Game.h"
 #include "PerlinNoise.h"
 #include "Particle.h"
-#include "VectorExt.h"
+#include "rayutils.h"
 #include <vector>
 
 class FlowFieldGenerator
