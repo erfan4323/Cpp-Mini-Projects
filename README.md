@@ -4,7 +4,7 @@ Small projects that includes graphics
 
 
 
-> I intend to update this repo weekly so  stay tuned :yellow_heart:
+> I intend to add more projects to this repository weekly, so check it once in a while :yellow_heart:
 
 
 
