@@ -1,6 +1,7 @@
 # Cpp-Mini-Projects
 
 Small projects that includes graphics
+I intend to update this repo weekly so stay tuned
 
 
 
