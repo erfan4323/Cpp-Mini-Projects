@@ -1,0 +1,9 @@
+/out
+bin/
+build/
+/.vs
+.idea/
+CMakeSettings.json
+Makefile
+thirdparty
+out
