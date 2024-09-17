@@ -1,37 +1,10 @@
 #pragma once
 #include <functional>
-#include "raylib.h"
-#include "Common/rayutils.h"
 #include <unordered_map>
 
+#include "InputData.h"
+
 #define MouseLambda [this](const Mouse& mouse)
-
-enum class InputState
-{
-	Pressed,
-	Down,
-	Release,
-	Up
-};
-
-struct Mouse
-{
-	Vector2 delta;
-	Vector2 position;
-	float wheelMove;
-	Vector2 wheelMoveV;
-	float velocity;
-	float angle;
-
-	Mouse() :
-		delta(GetMouseDelta()),
-		position(GetMousePosition()),
-		wheelMove(GetMouseWheelMove()),
-		wheelMoveV(GetMouseWheelMoveV()),
-		velocity(Vector2Length(delta)),
-		angle(Vector2Heading(delta))
-	{}
-};
 
 class InputManager
 {
@@ -110,7 +83,7 @@ public:
 		}
 	}
 
-	void Clear()
+	void Flush()
 	{
 		keyActions.clear();
 		mouseActions.clear();

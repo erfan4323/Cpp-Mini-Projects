@@ -44,7 +44,7 @@ Vector2 Vector2FromAngle(float angle)
 	return Vector2{cosf(angle), sinf(angle)};
 }
 
-//Gives an angle in degrees from a Vector2 (NOTE: you can primarily use Vector2Heading)
+//Gives an angle in 360 degrees from a Vector2 (NOTE: you can primarily use Vector2Heading)
 float Vector2ToAngle(const Vector2& delta)
 {
 	float angleRad = atan2(-delta.y, delta.x);
