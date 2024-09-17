@@ -1,5 +1,5 @@
 #pragma once
-#include "Game.h"
+#include "Core/Game.h"
 #include "Ink.h"
 #include <chrono>
 #include <thread>
