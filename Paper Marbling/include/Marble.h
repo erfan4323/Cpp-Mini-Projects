@@ -21,7 +21,7 @@ public:
 	{}
 
 private:
-	void OnCreate()
+	void OnCreate() override
 	{
 		RegisterMouseAction(
 			MOUSE_BUTTON_LEFT,
@@ -30,19 +30,30 @@ private:
 		);
 	}
 
-	void OnDestroy()
+	void OnDestroy() override
 	{}
 
 	void Update(float dt) override
-	{}
-
-	void Render() override
 	{
 		auto x = GetRandomValue(0, width);
 		auto y = GetRandomValue(0, height);
 		auto r = GetRandomValue(10, 50);
 		DropInk(x, y, r);
+	}
 
+	void OnUI() override
+	{
+		ImGui::Begin("Test");
+
+		ImGui::Text("Hello");
+		ImGui::Button("Button");
+		ImGui::Button("Button2");
+
+		ImGui::End();
+	}
+
+	void Render() override
+	{
 		for (auto& drop : drops)
 			drop.Draw();
 	}
@@ -54,14 +65,9 @@ private:
 		using std::chrono::system_clock;
 
 		auto mouse = GetMousePosition();
-		auto drop = Drop(mouse.x, mouse.y, 50);
-
-		for (auto& other : drops)
-			other.Marble(drop);
+		DropInk(mouse.x, mouse.y, 50);
 
 		sleep_for(50ms);
-
-		drops.push_back(drop);
 	}
 
 	void DropInk(int x, int y, int r)

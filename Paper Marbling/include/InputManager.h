@@ -1,7 +1,7 @@
 #pragma once
 #include <functional>
-#include <unordered_map>
 #include <raylib.h>
+#include <unordered_map>
 
 enum class InputState
 {

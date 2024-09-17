@@ -10,6 +10,8 @@
 // Module Functions Definition - Color util
 //----------------------------------------------------------------------------------
 
+#define DEFAULTBG Color{53, 53, 53, 255}
+
 //Generates a grayscale color
 Color fill(float value)
 {
@@ -71,6 +73,8 @@ Vector2 Vector2SetMag(Vector2 vec, float len)
 //----------------------------------------------------------------------------------
 // Module Functions Definition - Drawing util
 //----------------------------------------------------------------------------------
+
+//Polygon draw with custom points
 void DrawPolyPoint(Vector2 center, Vector2* points, int pointCount, Color color)
 {
 	if (pointCount >= 3 && points != NULL)
@@ -91,6 +95,7 @@ void DrawPolyPoint(Vector2 center, Vector2* points, int pointCount, Color color)
 	}
 }
 
+//Polygon lines draw with custom points
 void DrawPolyLinesPoint(Vector2* points, int pointCount, Color color)
 {
 	if (pointCount >= 3 && points != NULL)

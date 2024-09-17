@@ -9,18 +9,18 @@ private:
 	int circleRes;
 	Color color;
 	std::vector<Vector2> vertices;
-
-public:
 	int radius;
 	Vector2 center;
 
+public:
+
 	Drop(int x, int y, int r) :
-		radius(r),
 		circleRes(100),
-		center({(float) x, (float) y})
+		radius(r),
+		center({(float) x, (float) y}),
+		color(GetRandomColor())
 	{
 		SetupVertices(r);
-		color = GetRandomColor();
 	}
 
 	~Drop()
@@ -56,6 +56,8 @@ private:
 	{
 		// marble math :
 		// C + (P - C) * sqrt(1 + (r^2/|P - C|^2))
+		// C is the center of the drop we are putting and r is the radius of that drop
+		// P is every point on other drops that should move in accord of the C and it's radius r
 		auto c = other.center;
 		auto& p = vert;
 		auto r = other.radius;

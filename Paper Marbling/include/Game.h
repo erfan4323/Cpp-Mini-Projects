@@ -3,105 +3,54 @@
 #include <functional>
 #include <raylib.h>
 #include "InputManager.h"
-
-#pragma region imgui
-#include "imgui.h"
-#include "rlImGui.h"
-#include "imguiThemes.h"
-#include <InputManager.h>
-#pragma endregion
+#include "ImGuiInitializer.h"
 
 class Game
 {
-private:
+private: // Properties
 	ImGuiIO io;
 	InputManager inputManager;
 
 	bool backgroundCleared = false;
 
-public:
+public: // Constructors & Destructors
 	Game(std::string windowName, int width, int height)
 	{
 		SetConfigFlags(FLAG_WINDOW_RESIZABLE);
 		InitWindow(width, height, windowName.c_str());
 		SetTargetFPS(60);
 
-		#pragma region imgui
-		rlImGuiSetup(true);
-
-		//you can use whatever imgui theme you like!
-		//ImGui::StyleColorsDark();
-		//imguiThemes::yellow();
-		imguiThemes::gray();
-		//imguiThemes::green();
-		//imguiThemes::red();
-		//imguiThemes::embraceTheDarkness();
-
-		ImGuiIO& io = ImGui::GetIO(); (void) io;
-		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
-		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
-		io.FontGlobalScale = 2;
-
-		ImGuiStyle& style = ImGui::GetStyle();
-		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-		{
-			//style.WindowRounding = 0.0f;
-			style.Colors[ImGuiCol_WindowBg].w = 0.5f;
-			//style.Colors[ImGuiCol_DockingEmptyBg].w = 0.f;
-		}
-		this->io = io;
-
-		#pragma endregion
+		ImGuiInitialize(io);
 	}
 
 	~Game()
 	{
-		#pragma region imgui
-		rlImGuiShutdown();
-		#pragma endregion
+		ImGuiUnInitialize();
 
 		CloseWindow();
 	}
-protected:
-	void ClearBackgroundOnce(Color color)
-	{
-		BeginDrawing();
-		ClearBackground(color);
-		EndDrawing();
-		backgroundCleared = true;
-	}
 
-private:
-	void ConfigRender(const std::function<void()>& render) const
+private: // Configs
+	void ConfigRender(const std::function<void()>& render)
 	{
 		BeginDrawing();
 		ClearBackground(Color{53, 53, 53, 255});
-		#pragma region imgui
-		rlImGuiBegin();
 
-		ImGui::PushStyleColor(ImGuiCol_WindowBg, {});
-		ImGui::PushStyleColor(ImGuiCol_DockingEmptyBg, {});
-		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
-		ImGui::PopStyleColor(2);
-		#pragma endregion
+		ImguiBeginDrawing();
+
 		render();
-		#pragma region imgui
-		rlImGuiEnd();
 
-		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-		{
-			ImGui::UpdatePlatformWindows();
-			ImGui::RenderPlatformWindowsDefault();
-		}
-		#pragma endregion
+		ImguiEndDrawing(io);
+
 		EndDrawing();
 	}
 
-public:
+protected: // Client Side coding and helpers
 	virtual void OnCreate() {}
 	virtual void OnDestroy() {}
-	virtual void Update(float dt) {}
-	virtual void Render() {}
+	virtual void OnUI() {}
+	virtual void Update(float dt) = 0;
+	virtual void Render() = 0;
 
 	void RegisterKeyAction(int key, InputState inputState, InputManager::Action action)
 	{
@@ -113,6 +62,7 @@ public:
 		inputManager.RegisterMouseAction(button, action, inputState);
 	}
 
+public: // Code runner methods
 	void GameLoop()
 	{
 		OnCreate();
@@ -125,7 +75,8 @@ public:
 
 			Update(dt);
 
-			ConfigRender([this]() { Render(); });
+			ConfigRender([this]()
+			{ OnUI(); Render(); });
 		}
 
 		OnDestroy();
