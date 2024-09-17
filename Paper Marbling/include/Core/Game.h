@@ -48,16 +48,16 @@ private: // Configs
 protected: // Client Side coding and helpers
 	virtual void OnCreate() {}
 	virtual void OnDestroy() {}
-	virtual void OnUI() {}
+	virtual void OnGUI() {}
 	virtual void Update(float dt) = 0;
 	virtual void Render() = 0;
 
-	void RegisterKeyAction(int key, InputState inputState, InputManager::Action action)
+	void RegisterKeyAction(int key, InputState inputState, InputManager::KeyAction action)
 	{
 		inputManager.RegisterKeyAction(key, action, inputState);
 	}
 
-	void RegisterMouseAction(int button, InputState inputState, InputManager::Action action)
+	void RegisterMouseAction(int button, InputState inputState, InputManager::MouseAction action)
 	{
 		inputManager.RegisterMouseAction(button, action, inputState);
 	}
@@ -76,7 +76,7 @@ public: // Code runner methods
 			Update(dt);
 
 			ConfigRender([this]()
-			{ OnUI(); Render(); });
+			{ OnGUI(); Render(); });
 		}
 
 		OnDestroy();

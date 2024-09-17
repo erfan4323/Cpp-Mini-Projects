@@ -11,20 +11,42 @@ enum class InputState
 	Up
 };
 
+struct Mouse
+{
+	Vector2 delta;
+	Vector2 position;
+	float wheelMove;
+	Vector2 wheelMoveV;
+
+	Mouse() :
+		delta(GetMouseDelta()),
+		position(GetMousePosition()),
+		wheelMove(GetMouseWheelMove()),
+		wheelMoveV(GetMouseWheelMoveV())
+	{}
+};
+
 class InputManager
 {
 public:
-	using Action = std::function<void()>;
+	using KeyAction = std::function<void()>;
+	using MouseAction = std::function<void(const Mouse&)>;
 
 private:
-	struct ActionInfo
+	struct KeyActionInfo
 	{
-		Action action;
+		KeyAction action;
 		InputState state;
 	};
 
-	std::unordered_map<int, ActionInfo> keyActions;
-	std::unordered_map<int, ActionInfo> mouseActions;
+	struct MouseActionInfo
+	{
+		MouseAction action;
+		InputState state;
+	};
+
+	std::unordered_map<int, KeyActionInfo> keyActions;
+	std::unordered_map<int, MouseActionInfo> mouseActions;
 
 	bool IsKeyInState(int key, InputState state) const
 	{
@@ -51,12 +73,12 @@ private:
 	}
 
 public:
-	void RegisterKeyAction(int key, Action action, InputState mouseState)
+	void RegisterKeyAction(int key, KeyAction action, InputState mouseState)
 	{
 		keyActions[key] = {action, mouseState};
 	}
 
-	void RegisterMouseAction(int button, Action action, InputState mouseState)
+	void RegisterMouseAction(int button, MouseAction action, InputState mouseState)
 	{
 		mouseActions[button] = {action, mouseState};
 	}
@@ -74,7 +96,10 @@ public:
 		{
 			const auto& [action, requiredState] = actionInfo;
 			if (IsMouseButtonInState(button, requiredState))
-				action();
+			{
+				Mouse currentMouse;
+				action(currentMouse);
+			}
 		}
 	}
 

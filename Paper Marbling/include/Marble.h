@@ -26,7 +26,7 @@ private:
 		RegisterMouseAction(
 			MOUSE_BUTTON_LEFT,
 			InputState::Down,
-			[this]() { DropInk(); }
+			[this](const Mouse& mouse) { DropInk(mouse); }
 		);
 	}
 
@@ -41,31 +41,19 @@ private:
 		DropInk(x, y, r);
 	}
 
-	void OnUI() override
-	{
-		ImGui::Begin("Test");
-
-		ImGui::Text("Hello");
-		ImGui::Button("Button");
-		ImGui::Button("Button2");
-
-		ImGui::End();
-	}
-
 	void Render() override
 	{
 		for (auto& drop : drops)
 			drop.Draw();
 	}
 
-	void DropInk()
+	void DropInk(const Mouse& mouse)
 	{
 		using namespace std::this_thread;
 		using namespace std::chrono_literals; // ns, us, ms, s, h, etc.
 		using std::chrono::system_clock;
 
-		auto mouse = GetMousePosition();
-		DropInk(mouse.x, mouse.y, 50);
+		DropInk(mouse.position.x, mouse.position.y, 50);
 
 		sleep_for(50ms);
 	}
