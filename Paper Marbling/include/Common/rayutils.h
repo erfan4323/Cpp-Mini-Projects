@@ -11,6 +11,7 @@
 //----------------------------------------------------------------------------------
 
 #define DEFAULTBG Color{53, 53, 53, 255}
+#define PINKBLUEGRAD Vector3{100, 180, 230}
 
 //Generates a grayscale color
 Color fill(float value)
@@ -23,11 +24,11 @@ Color fill(float value)
 }
 
 // Generates a random color
-Color GetRandomColor()
+Color GetRandomColor(Vector3 seed = {0})
 {
-	auto r = static_cast<unsigned char>(GetRandomValue(0, 255));
-	auto g = static_cast<unsigned char>(GetRandomValue(0, 255));
-	auto b = static_cast<unsigned char>(GetRandomValue(0, 255));
+	auto r = static_cast<unsigned char>(GetRandomValue(seed.x, 255));
+	auto g = static_cast<unsigned char>(GetRandomValue(seed.y, 255));
+	auto b = static_cast<unsigned char>(GetRandomValue(seed.z, 255));
 	unsigned char a = 255;
 
 	return Color{r, g, b, a};
@@ -41,6 +42,18 @@ Color GetRandomColor()
 Vector2 Vector2FromAngle(float angle)
 {
 	return Vector2{cosf(angle), sinf(angle)};
+}
+
+//Gives an angle in degrees from a Vector2 (NOTE: you can primarily use Vector2Heading)
+float Vector2ToAngle(const Vector2& delta)
+{
+	float angleRad = atan2(-delta.y, delta.x);
+	float angleDeg = angleRad * (180.0f / PI);
+
+	if (angleDeg < 0.0f)
+		angleDeg += 360.0f;
+
+	return angleDeg;
 }
 
 //Generates a random 2D direction vector

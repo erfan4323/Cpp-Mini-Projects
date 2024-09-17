@@ -26,7 +26,7 @@ private:
 		RegisterMouseAction(
 			MOUSE_BUTTON_LEFT,
 			InputState::Down,
-			MouseLambda { DropInk(mouse); }
+			MouseLambda{DropInk(mouse);}
 		);
 	}
 
@@ -49,13 +49,11 @@ private:
 
 	void DropInk(const Mouse& mouse)
 	{
-		using namespace std::this_thread;
-		using namespace std::chrono_literals; // ns, us, ms, s, h, etc.
-		using std::chrono::system_clock;
-
-		DropInk(mouse.position.x, mouse.position.y, 50);
-
-		sleep_for(50ms);
+		DropInk(
+			mouse.position.x,
+			mouse.position.y,
+			mouse.velocity + 10
+		);
 	}
 
 	void DropInk(int x, int y, int r)

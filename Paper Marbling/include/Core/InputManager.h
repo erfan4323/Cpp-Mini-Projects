@@ -1,6 +1,7 @@
 #pragma once
 #include <functional>
-#include <raylib.h>
+#include "raylib.h"
+#include "Common/rayutils.h"
 #include <unordered_map>
 
 #define MouseLambda [this](const Mouse& mouse)
@@ -19,12 +20,16 @@ struct Mouse
 	Vector2 position;
 	float wheelMove;
 	Vector2 wheelMoveV;
+	float velocity;
+	float angle;
 
 	Mouse() :
 		delta(GetMouseDelta()),
 		position(GetMousePosition()),
 		wheelMove(GetMouseWheelMove()),
-		wheelMoveV(GetMouseWheelMoveV())
+		wheelMoveV(GetMouseWheelMoveV()),
+		velocity(Vector2Length(delta)),
+		angle(Vector2Heading(delta))
 	{}
 };
 
