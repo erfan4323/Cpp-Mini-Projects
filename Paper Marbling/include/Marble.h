@@ -26,7 +26,7 @@ private:
 		RegisterMouseAction(
 			MOUSE_BUTTON_LEFT,
 			InputState::Down,
-			[this](const Mouse& mouse) { DropInk(mouse); }
+			MouseLambda { DropInk(mouse); }
 		);
 	}
 

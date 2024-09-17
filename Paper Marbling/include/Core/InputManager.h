@@ -3,6 +3,8 @@
 #include <raylib.h>
 #include <unordered_map>
 
+#define MouseLambda [this](const Mouse& mouse)
+
 enum class InputState
 {
 	Pressed,
