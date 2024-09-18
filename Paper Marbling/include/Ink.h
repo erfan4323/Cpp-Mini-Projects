@@ -14,7 +14,7 @@ private:
 public:
 
 	Drop(int x, int y, int r) :
-		circleRes(100),
+		circleRes(500),
 		radius(r),
 		center({(float) x, (float) y}),
 		color(GetRandomColor())
@@ -31,6 +31,16 @@ public:
 			MarbleMath(other, vert);
 
 		MarbleMath(other, center);
+	}
+
+	void Tine(float xPos, float z, float c)
+	{
+		auto u = 1 / pow(2, 1 / c);
+
+		for (auto& vert : vertices)
+			TineMath(vert, z, u, xPos);
+
+		TineMath(center, z, u, xPos);
 	}
 
 	void Draw()
@@ -66,5 +76,11 @@ private:
 		auto result = Vector2Scale(pminc, root);
 		result = Vector2Add(result, c);
 		vert = result;
+	}
+
+	void TineMath(Vector2& vert, float z, double u, float xPos)
+	{
+		vert.x = vert.x;
+		vert.y = vert.y + z * pow(u, abs(vert.x - xPos));
 	}
 };

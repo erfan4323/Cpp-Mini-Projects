@@ -28,23 +28,35 @@ private:
 			InputState::Down,
 			MouseLambda{DropInk(mouse);}
 		);
+
+		for (int i = 0; i < 50; i++)
+			DropInk(400 + i, 400, 50);
+
+		RegisterMouseAction(
+			MOUSE_BUTTON_RIGHT,
+			InputState::Down,
+			MouseLambda{TineLine(mouse.position.x, 5, 16);}
+		);
 	}
 
 	void OnDestroy() override
 	{}
 
 	void Update(float dt) override
-	{
-		auto x = GetRandomValue(0, width);
-		auto y = GetRandomValue(0, height);
-		auto r = GetRandomValue(10, 50);
-		DropInk(x, y, r);
-	}
+	{}
 
 	void Render() override
 	{
 		for (auto& drop : drops)
 			drop.Draw();
+	}
+
+	void RandomDrop()
+	{
+		auto x = GetRandomValue(0, width);
+		auto y = GetRandomValue(0, height);
+		auto r = GetRandomValue(10, 50);
+		DropInk(x, y, r);
 	}
 
 	void DropInk(const Mouse& mouse)
@@ -64,5 +76,11 @@ private:
 			other.Marble(drop);
 
 		drops.push_back(drop);
+	}
+
+	void TineLine(float xl, float z, float c)
+	{
+		for (auto& other : drops)
+			other.Tine(xl, z, c);
 	}
 };
