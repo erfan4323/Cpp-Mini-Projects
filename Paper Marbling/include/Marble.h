@@ -24,23 +24,28 @@ private:
 	void OnCreate() override
 	{
 		RegisterMouseAction(
-			MOUSE_BUTTON_LEFT,
+			MOUSE_BUTTON_RIGHT,
 			InputState::Down,
 			MouseLambda{DropInk(mouse);}
 		);
 
-		for (int i = 0; i < 50; i++)
-			DropInk(400 + i, 400, 50);
-
 		RegisterMouseAction(
-			MOUSE_BUTTON_RIGHT,
+			MOUSE_BUTTON_LEFT,
 			InputState::Down,
-			MouseLambda{TineLine(mouse.position.x, 5, 16);}
+			MouseLambda{
+				std::cout << mouse.Debug() << '\n';
+				TineLine(
+					Vector2Normalize(mouse.position), 
+					mouse.delta, 
+					1, 
+					16
+				);
+			}
 		);
-	}
 
-	void OnDestroy() override
-	{}
+		for (int i = 0; i < 100; i++)
+			DropInk(400 + i, 400, 50);
+	}
 
 	void Update(float dt) override
 	{}
@@ -78,9 +83,9 @@ private:
 		drops.push_back(drop);
 	}
 
-	void TineLine(float xl, float z, float c)
+	void TineLine(Vector2 v, Vector2 pos, float z, float c)
 	{
 		for (auto& other : drops)
-			other.Tine(xl, z, c);
+			other.Tine(v, pos, z, c);
 	}
 };

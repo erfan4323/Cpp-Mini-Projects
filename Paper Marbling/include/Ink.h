@@ -33,14 +33,13 @@ public:
 		MarbleMath(other, center);
 	}
 
-	void Tine(float xPos, float z, float c)
+	void Tine(Vector2 m, Vector2 b, float z, float c)
 	{
 		auto u = 1 / pow(2, 1 / c);
-
 		for (auto& vert : vertices)
-			TineMath(vert, z, u, xPos);
+			TineMath(vert, b, m, z, u);
 
-		TineMath(center, z, u, xPos);
+		TineMath(center, b, m, z, u);
 	}
 
 	void Draw()
@@ -78,9 +77,13 @@ private:
 		vert = result;
 	}
 
-	void TineMath(Vector2& vert, float z, double u, float xPos)
+	void TineMath(Vector2& vert, const Vector2& b, const Vector2& m, float z, double u)
 	{
-		vert.x = vert.x;
-		vert.y = vert.y + z * pow(u, abs(vert.x - xPos));
+		auto pminb = Vector2Subtract(vert, b);
+		auto n = Vector2Rotate(m, HALF_PI);
+		auto d = abs(Vector2DotProduct(pminb, n));
+		auto mag = z * pow(u, d);
+		auto p = Vector2Add(vert, Vector2Scale(m, mag));
+		vert = p;
 	}
 };

@@ -5,6 +5,7 @@
 #include <rlgl.h>
 
 #define TWO_PI PI * 2
+#define HALF_PI PI / 2
 
 //----------------------------------------------------------------------------------
 // Module Functions Definition - Color util
