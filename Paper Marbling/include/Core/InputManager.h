@@ -28,6 +28,8 @@ private:
 	std::unordered_map<int, KeyActionInfo> keyActions;
 	std::unordered_map<int, MouseActionInfo> mouseActions;
 
+	Mouse currentMouse;
+
 	bool IsKeyInState(int key, InputState state) const
 	{
 		switch (state)
@@ -77,7 +79,7 @@ public:
 			const auto& [action, requiredState] = actionInfo;
 			if (IsMouseButtonInState(button, requiredState))
 			{
-				Mouse currentMouse;
+				currentMouse.Update();
 				action(currentMouse);
 			}
 		}

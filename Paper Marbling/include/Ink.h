@@ -33,13 +33,15 @@ public:
 		MarbleMath(other, center);
 	}
 
-	void Tine(Vector2 m, Vector2 b, float z, float c)
+	void Tine(Vector2 mouseMovement, Vector2 basePosition, float intensity, float decayExponent)
 	{
-		auto u = 1 / pow(2, 1 / c);
-		for (auto& vert : vertices)
-			TineMath(vert, b, m, z, u);
+		auto decayFactor = 1 / pow(2, 1 / decayExponent);
+		for (auto& vertex : vertices)
+			TineMath(vertex, basePosition, mouseMovement, intensity, decayFactor);
 
-		TineMath(center, b, m, z, u);
+		TineMath(center, basePosition, mouseMovement, intensity, decayFactor);
+
+		std::cout << "Base Position: " << basePosition.x << ' ' << basePosition.y << '\n';
 	}
 
 	void Draw()
@@ -77,13 +79,19 @@ private:
 		vert = result;
 	}
 
-	void TineMath(Vector2& vert, const Vector2& b, const Vector2& m, float z, double u)
+	void TineMath(
+		Vector2& vertex, 
+		const Vector2& basePosition, 
+		const Vector2& mouseMovement, 
+		float intensity, 
+		double decayFactor
+	)
 	{
-		auto pminb = Vector2Subtract(vert, b);
-		auto n = Vector2Rotate(m, HALF_PI);
-		auto d = abs(Vector2DotProduct(pminb, n));
-		auto mag = z * pow(u, d);
-		auto p = Vector2Add(vert, Vector2Scale(m, mag));
-		vert = p;
+		auto offset = Vector2Subtract(vertex, basePosition);
+		auto perpendicularDirection = Vector2Rotate(mouseMovement, HALF_PI);
+		auto distance = abs(Vector2DotProduct(offset, perpendicularDirection));
+		auto magnitude = intensity * pow(decayFactor, distance);
+		auto newPosition = Vector2Add(vertex, Vector2Scale(mouseMovement, magnitude));
+		vertex = newPosition;
 	}
 };

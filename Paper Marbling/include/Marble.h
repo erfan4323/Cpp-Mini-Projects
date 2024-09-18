@@ -33,18 +33,18 @@ private:
 			MOUSE_BUTTON_LEFT,
 			InputState::Down,
 			MouseLambda{
-				std::cout << mouse.Debug() << '\n';
+				//std::cout << mouse.Debug() << '\n';
 				TineLine(
-					Vector2Normalize(mouse.position), 
-					mouse.delta, 
-					1, 
-					16
+					Vector2Normalize(mouse.delta),
+					mouse.position,
+					5, 
+					20
 				);
 			}
 		);
 
-		for (int i = 0; i < 100; i++)
-			DropInk(400 + i, 400, 50);
+		//for (int i = 0; i < 100; i++)
+		//	DropInk(400 + i, 400, 50);
 	}
 
 	void Update(float dt) override
@@ -83,9 +83,9 @@ private:
 		drops.push_back(drop);
 	}
 
-	void TineLine(Vector2 v, Vector2 pos, float z, float c)
+	void TineLine(Vector2 mouseMovement, Vector2 basePosition, float intensity, float decayExponent)
 	{
 		for (auto& other : drops)
-			other.Tine(v, pos, z, c);
+			other.Tine(mouseMovement, basePosition, intensity, decayExponent);
 	}
 };

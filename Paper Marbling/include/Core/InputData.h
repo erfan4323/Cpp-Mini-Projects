@@ -30,6 +30,16 @@ struct Mouse
 		angle(Vector2Heading(delta))
 	{}
 
+	void Update()
+	{
+		delta = GetMouseDelta();
+		position = GetMousePosition();
+		wheelMove = GetMouseWheelMove();
+		wheelMoveV = GetMouseWheelMoveV();
+		velocity = Vector2Length(delta);
+		angle = Vector2Heading(delta);
+	}
+
 	std::string Debug() const
 	{
 		std::stringstream state{};
