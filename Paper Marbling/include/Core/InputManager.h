@@ -1,6 +1,6 @@
 #pragma once
 #include <functional>
-#include <unordered_map>
+#include <map>
 
 #include "InputData.h"
 
@@ -25,8 +25,8 @@ private:
 		InputState state;
 	};
 
-	std::unordered_map<int, KeyActionInfo> keyActions;
-	std::unordered_map<int, MouseActionInfo> mouseActions;
+	std::multimap<int, KeyActionInfo> keyActions;
+	std::multimap<int, MouseActionInfo> mouseActions;
 
 	Mouse currentMouse;
 
@@ -55,14 +55,14 @@ private:
 	}
 
 public:
-	void RegisterKeyAction(int key, KeyAction action, InputState mouseState)
+	void RegisterKeyAction(int key, KeyAction action, InputState keyState)
 	{
-		keyActions[key] = {action, mouseState};
+		keyActions.insert({key, {action, keyState}});
 	}
 
 	void RegisterMouseAction(int button, MouseAction action, InputState mouseState)
 	{
-		mouseActions[button] = {action, mouseState};
+		mouseActions.insert({button, {action, mouseState}});
 	}
 
 	void ProcessInput()

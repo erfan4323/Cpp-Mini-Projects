@@ -22,6 +22,15 @@ public:
 		SetupVertices(r);
 	}
 
+	Drop(int x, int y, int r, Color col) :
+		circleRes(500),
+		radius(r),
+		center({(float) x, (float) y}),
+		color(col)
+	{
+		SetupVertices(r);
+	}
+
 	~Drop()
 	{}
 
@@ -40,8 +49,6 @@ public:
 			TineMath(vertex, basePosition, mouseMovement, intensity, decayFactor);
 
 		TineMath(center, basePosition, mouseMovement, intensity, decayFactor);
-
-		std::cout << "Base Position: " << basePosition.x << ' ' << basePosition.y << '\n';
 	}
 
 	void Draw()

@@ -11,6 +11,9 @@ private:
 	int height;
 	std::vector<Drop> drops;
 
+	Color dropCol;
+	bool newCol = true;
+
 public:
 	Marble(std::string header, int width, int height) :
 		Game(header, width, height),
@@ -23,17 +26,31 @@ public:
 private:
 	void OnCreate() override
 	{
+		dropCol = GetRandomColor();
+
 		RegisterMouseAction(
 			MOUSE_BUTTON_RIGHT,
 			InputState::Down,
-			MouseLambda{DropInk(mouse);}
+			MouseLambda{
+				if (newCol)
+				{
+					dropCol = GetRandomColor();
+					newCol = false;
+				}
+				DropInk(mouse);
+			}
+		);
+
+		RegisterMouseAction(
+			MOUSE_BUTTON_RIGHT,
+			InputState::Release,
+			MouseLambda{newCol = true;}
 		);
 
 		RegisterMouseAction(
 			MOUSE_BUTTON_LEFT,
 			InputState::Down,
 			MouseLambda{
-				//std::cout << mouse.Debug() << '\n';
 				TineLine(
 					Vector2Normalize(mouse.delta),
 					mouse.position,
@@ -43,8 +60,6 @@ private:
 			}
 		);
 
-		//for (int i = 0; i < 100; i++)
-		//	DropInk(400 + i, 400, 50);
 	}
 
 	void Update(float dt) override
@@ -58,6 +73,7 @@ private:
 
 	void RandomDrop()
 	{
+		dropCol = GetRandomColor();
 		auto x = GetRandomValue(0, width);
 		auto y = GetRandomValue(0, height);
 		auto r = GetRandomValue(10, 50);
@@ -75,7 +91,7 @@ private:
 
 	void DropInk(int x, int y, int r)
 	{
-		auto drop = Drop(x, y, r);
+		auto drop = Drop(x, y, r, dropCol);
 
 		for (auto& other : drops)
 			other.Marble(drop);
