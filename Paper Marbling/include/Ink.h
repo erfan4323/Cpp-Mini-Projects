@@ -12,16 +12,6 @@ private:
 	Vector2 center;
 
 public:
-
-	Drop(int x, int y, int r) :
-		circleRes(500),
-		radius(r),
-		center({(float) x, (float) y}),
-		color(GetRandomColor())
-	{
-		SetupVertices(r);
-	}
-
 	Drop(int x, int y, int r, Color col) :
 		circleRes(500),
 		radius(r),
