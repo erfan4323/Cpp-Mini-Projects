@@ -1,7 +1,6 @@
 add_rules("mode.debug", "mode.release")
 
--- Add dependencies that you require
-add_requires("raylib", "fmt")
+add_requires("raylib")
 
 -- imgui settings
 local imgui_dir = path.join("lib/imgui-docking/", "imgui")
@@ -34,17 +33,14 @@ target("test")
     set_kind("binary")
     set_languages("c++20")
 
-    add_includedirs(path.join(imgui_dir), rlimgui_dir, common_dir, core_dir)
+    add_includedirs(imgui_dir, rlimgui_dir, common_dir, core_dir)
     add_files(table.unpack(imgui_files))
     add_files(table.unpack(rlimgui_files))
 
 
     add_files("src/*.cpp")
 
-    add_packages("raylib", "fmt")
-
-    
-
+    add_packages("raylib")
 --
 -- If you want to known more usage about xmake, please see https://xmake.io
 --

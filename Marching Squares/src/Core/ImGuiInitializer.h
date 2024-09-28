@@ -3,11 +3,10 @@
 #include "imgui.h"
 #include "rlImGui.h"
 #include "imguiThemes.h"
-#include "InputManager.h"
 
 void ImGuiInitialize(ImGuiIO& outio)
 {
-	#pragma region imgui
+#pragma region imgui
 	rlImGuiSetup(true);
 
 	//you can use whatever imgui theme you like!
@@ -18,7 +17,7 @@ void ImGuiInitialize(ImGuiIO& outio)
 	//imguiThemes::red();
 	//imguiThemes::embraceTheDarkness();
 
-	ImGuiIO& io = ImGui::GetIO(); (void) io;
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
 	io.FontGlobalScale = 2;
@@ -32,19 +31,19 @@ void ImGuiInitialize(ImGuiIO& outio)
 	}
 	outio = io;
 
-	#pragma endregion
+#pragma endregion
 }
 
 void ImGuiUnInitialize()
 {
-	#pragma region imgui
+#pragma region imgui
 	rlImGuiShutdown();
-	#pragma endregion
+#pragma endregion
 }
 
 void ImguiEndDrawing(ImGuiIO& io)
 {
-	#pragma region imgui
+#pragma region imgui
 	rlImGuiEnd();
 
 	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
@@ -52,17 +51,17 @@ void ImguiEndDrawing(ImGuiIO& io)
 		ImGui::UpdatePlatformWindows();
 		ImGui::RenderPlatformWindowsDefault();
 	}
-	#pragma endregion
+#pragma endregion
 }
 
 void ImguiBeginDrawing()
 {
-	#pragma region imgui
+#pragma region imgui
 	rlImGuiBegin();
 
 	ImGui::PushStyleColor(ImGuiCol_WindowBg, {});
 	ImGui::PushStyleColor(ImGuiCol_DockingEmptyBg, {});
 	ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 	ImGui::PopStyleColor(2);
-	#pragma endregion
+#pragma endregion
 }

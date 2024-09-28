@@ -1,7 +1,7 @@
-#include "Marble.h"
+#include "MarchingSq.h"
 
 int main()
 {
-    Marble m("Marble", 800, 800);
+    MarchingSq m;
     m.GameLoop();
 }

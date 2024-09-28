@@ -13,10 +13,24 @@ private: // Properties
 
 	bool backgroundCleared = false;
 
+public: // Window Options
+	std::string appName = "Un initialized";
+	int appWidth = 500;
+	int appHeight = 500;
+	ConfigFlags appWindowFlag = FLAG_WINDOW_RESIZABLE;
+
+
 public: // Constructors & Destructors
-	Game(std::string windowName, int width, int height)
+	Game(std::string windowName,
+		int width,
+		int height,
+		ConfigFlags windowFlag = FLAG_WINDOW_RESIZABLE) :
+		appWidth(width),
+		appHeight(height),
+		appName(windowName),
+		appWindowFlag(windowFlag)
 	{
-		SetConfigFlags(FLAG_WINDOW_RESIZABLE);
+		SetConfigFlags(appWindowFlag);
 		InitWindow(width, height, windowName.c_str());
 		SetTargetFPS(60);
 
@@ -34,7 +48,7 @@ private: // Configs
 	void ConfigRender(const std::function<void()>& render)
 	{
 		BeginDrawing();
-		ClearBackground(Color{53, 53, 53, 255});
+		ClearBackground(Color{ 53, 53, 53, 255 });
 
 		ImguiBeginDrawing();
 
@@ -75,8 +89,7 @@ public: // Code runner methods
 
 			Update(dt);
 
-			ConfigRender([this]()
-			{ OnGUI(); Render(); });
+			ConfigRender([this]() { OnGUI(); Render(); });
 		}
 
 		OnDestroy();

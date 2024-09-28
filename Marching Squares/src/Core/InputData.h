@@ -2,7 +2,7 @@
 
 #include <sstream>
 
-#include "Common/rayutils.h"
+#include "rayutils.h"
 
 enum class InputState
 {
@@ -28,7 +28,8 @@ struct Mouse
 		wheelMoveV(GetMouseWheelMoveV()),
 		velocity(Vector2Length(delta)),
 		angle(Vector2Heading(delta))
-	{}
+	{
+	}
 
 	void Update()
 	{
