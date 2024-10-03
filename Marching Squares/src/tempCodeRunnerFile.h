@@ -1,1 +1,0 @@
-DrawLineV(c, d, RAYWHITE);
