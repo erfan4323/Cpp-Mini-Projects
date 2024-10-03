@@ -39,6 +39,7 @@ target("test")
 
 
     add_files("src/*.cpp")
+    add_files("src/main.cpp", "src/Common/OpenSimplexNoise.cpp") 
 
     add_packages("raylib")
 --

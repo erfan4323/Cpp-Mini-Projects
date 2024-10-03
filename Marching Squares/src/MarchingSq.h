@@ -1,18 +1,22 @@
 #include "Game.h"
 #include "PerlinNoise.h"
+#include "OpenSimplexNoise.h"
 
 class MarchingSq : public Game
 {
 private:
     std::vector<std::vector<float>> field;
-    int rez = 20;
+    int rez = 5;
     int cols;
     int rows;
-    PerlinNoise noise;
+    float thresh = 0.1f;
+    float incr = 0.05f;
+    float zoff = 0.0f;
+    OSN::Noise<3> noise;
 
 
 public:
-    MarchingSq() : Game("Marching Squares", 800, 600)
+    MarchingSq() : Game("Marching Squares", 1000, 900)
     {
     }
 
@@ -25,20 +29,25 @@ private:
         rows = 1 + appHeight / rez;
 
         field.resize(cols, std::vector<float>(rows, 0.0f));
-        float xoff = 0.f;
-        for (size_t i = 0; i < cols; i++)
-        {
-            float yoff = 0.0f;
-            for (size_t j = 0; j < rows; j++)
-            {
-                field[i][j] = noise.noise(xoff, yoff);
-            }
 
-        }
     }
 
     void Update(float dt) override
     {
+        float xoff = 0.0f;
+        for (size_t i = 0; i < cols; i++)
+        {
+            xoff += incr;
+            float yoff = 0.0f;
+            for (size_t j = 0; j < rows; j++)
+            {
+                field[i][j] = noise.eval(xoff, yoff, zoff);
+                yoff += incr;
+            }
+
+        }
+        zoff += 0.01f;
+
 
     }
 
@@ -48,10 +57,15 @@ private:
         {
             for (size_t j = 0; j < rows; j++)
             {
-                DrawCircle(i * rez,
-                    j * rez,
-                    rez * 0.2,
-                    fill(Remap(field[i][j], 0, 1, 0, 255)));
+
+                // DrawRectangle(
+                //     i * rez,
+                //     j * rez,
+                //     rez,
+                //     rez,
+                //     fill(Remap(field[i][j], -1, 1, -100, 150))
+                // );
+
             }
 
         }
@@ -66,63 +80,69 @@ private:
                 Vector2 b = { x + rez, y + rez * 0.5 };
                 Vector2 c = { x + rez * 0.5, y + rez };
                 Vector2 d = { x, y + rez * 0.5 };
-                auto state = GetState(
-                    field[i][j],
-                    field[i + 1][j],
-                    field[i + 1][j + 1],
-                    field[i][j + 1]
+                int state = GetState(
+                    field[i][j] > thresh ? 1 : 0,
+                    field[i + 1][j] > thresh ? 1 : 0,
+                    field[i + 1][j + 1] > thresh ? 1 : 0,
+                    field[i][j + 1] > thresh ? 1 : 0
                 );
-                switch (state)
-                {
-                case 1:
-                    DrawLineV(c, d, RAYWHITE);
-                    break;
-                case 2:
-                    DrawLineV(b, c, RAYWHITE);
-                    break;
-                case 3:
-                    DrawLineV(b, d, RAYWHITE);
-                    break;
-                case 4:
-                    DrawLineV(a, b, RAYWHITE);
-                    break;
-                case 5:
-                    DrawLineV(a, d, RAYWHITE);
-                    DrawLineV(b, c, RAYWHITE);
-                    break;
-                case 6:
-                    DrawLineV(a, c, RAYWHITE);
-                    break;
-                case 7:
-                    DrawLineV(a, d, RAYWHITE);
-                    break;
-                case 8:
-                    DrawLineV(a, d, RAYWHITE);
-                    break;
-                case 9:
-                    DrawLineV(a, c, RAYWHITE);
-                    break;
-                case 10:
-                    DrawLineV(a, b, RAYWHITE);
-                    DrawLineV(c, d, RAYWHITE);
-                    break;
-                case 11:
-                    DrawLineV(a, b, RAYWHITE);
-                    break;
-                case 12:
-                    DrawLineV(b, d, RAYWHITE);
-                    break;
-                case 13:
-                    DrawLineV(b, c, RAYWHITE);
-                    break;
-                case 14:
-                    DrawLineV(c, d, RAYWHITE);
-                    break;
-                default:
-                    break;
-                }
+                DrawMarch(state, c, d, b, a);
+
             }
 
+        }
+
+    }
+    void DrawMarch(int state, const Vector2& c, const Vector2& d, const Vector2& b, const Vector2& a)
+    {
+        switch (state)
+        {
+        case 1:
+            DrawLineV(c, d, RAYWHITE);
+            break;
+        case 2:
+            DrawLineV(b, c, RAYWHITE);
+            break;
+        case 3:
+            DrawLineV(b, d, RAYWHITE);
+            break;
+        case 4:
+            DrawLineV(a, b, RAYWHITE);
+            break;
+        case 5:
+            DrawLineV(a, d, RAYWHITE);
+            DrawLineV(b, c, RAYWHITE);
+            break;
+        case 6:
+            DrawLineV(a, c, RAYWHITE);
+            break;
+        case 7:
+            DrawLineV(a, d, RAYWHITE);
+            break;
+        case 8:
+            DrawLineV(a, d, RAYWHITE);
+            break;
+        case 9:
+            DrawLineV(a, c, RAYWHITE);
+            break;
+        case 10:
+            DrawLineV(a, b, RAYWHITE);
+            DrawLineV(c, d, RAYWHITE);
+            break;
+        case 11:
+            DrawLineV(a, b, RAYWHITE);
+            break;
+        case 12:
+            DrawLineV(b, d, RAYWHITE);
+            break;
+        case 13:
+            DrawLineV(b, c, RAYWHITE);
+            break;
+        case 14:
+            DrawLineV(c, d, RAYWHITE);
+            break;
+        default:
+            break;
         }
     }
 
