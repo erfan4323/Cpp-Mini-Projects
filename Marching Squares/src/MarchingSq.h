@@ -160,6 +160,6 @@ private:
 
     int GetState(int a, int b, int c, int d)
     {
-        return a * 8 + b * 4 + c * 2 + d * 1;
+        return (a << 3) | (b << 2) | (c << 1) | d;
     }
 };
