@@ -53,23 +53,34 @@ private:
 
     void Render() override
     {
+        DrawField();
+
+        DrawMarchingSquares();
+
+    }
+
+    void DrawField()
+    {
         for (size_t i = 0; i < cols; i++)
         {
             for (size_t j = 0; j < rows; j++)
             {
 
-                // DrawRectangle(
-                //     i * rez,
-                //     j * rez,
-                //     rez,
-                //     rez,
-                //     fill(Remap(field[i][j], -1, 1, -100, 150))
-                // );
+                DrawRectangle(
+                    i * rez,
+                    j * rez,
+                    rez,
+                    rez,
+                    fill(Remap(field[i][j], -1, 1, -100, 150))
+                );
 
             }
 
         }
+    }
 
+    void DrawMarchingSquares()
+    {
         for (size_t i = 0; i < cols - 1; i++)
         {
             for (size_t j = 0; j < rows - 1; j++)
@@ -91,8 +102,8 @@ private:
             }
 
         }
-
     }
+
     void DrawMarch(int state, const Vector2& c, const Vector2& d, const Vector2& b, const Vector2& a)
     {
         switch (state)
