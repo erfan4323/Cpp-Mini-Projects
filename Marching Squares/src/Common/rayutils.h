@@ -21,18 +21,31 @@ Color fill(float value)
 
 	auto grayscale = static_cast<unsigned char>(value);
 
-	return Color{grayscale, grayscale, grayscale, 255};
+	return Color{ grayscale, grayscale, grayscale, 255 };
+}
+
+// Generates a smooth gradient color between two colors
+Color fill(float value, Color color1, Color color2)
+{
+	value = Clamp(value, 0.0f, 1.0f);
+
+	unsigned char r = static_cast<unsigned char>(color1.r + (color2.r - color1.r) * value);
+	unsigned char g = static_cast<unsigned char>(color1.g + (color2.g - color1.g) * value);
+	unsigned char b = static_cast<unsigned char>(color1.b + (color2.b - color1.b) * value);
+	unsigned char a = static_cast<unsigned char>(color1.a + (color2.a - color1.a) * value);
+
+	return Color{ r, g, b, a };
 }
 
 // Generates a random color
-Color GetRandomColor(Vector3 seed = {0})
+Color GetRandomColor(Vector3 seed = { 0 })
 {
 	auto r = static_cast<unsigned char>(GetRandomValue(seed.x, 255));
 	auto g = static_cast<unsigned char>(GetRandomValue(seed.y, 255));
 	auto b = static_cast<unsigned char>(GetRandomValue(seed.z, 255));
 	unsigned char a = 255;
 
-	return Color{r, g, b, a};
+	return Color{ r, g, b, a };
 }
 
 //----------------------------------------------------------------------------------
@@ -42,7 +55,7 @@ Color GetRandomColor(Vector3 seed = {0})
 //Creates a 2D vector from a given angle
 Vector2 Vector2FromAngle(float angle)
 {
-	return Vector2{cosf(angle), sinf(angle)};
+	return Vector2{ cosf(angle), sinf(angle) };
 }
 
 //Gives an angle in 360 degrees from a Vector2 (NOTE: you can primarily use Vector2Heading)

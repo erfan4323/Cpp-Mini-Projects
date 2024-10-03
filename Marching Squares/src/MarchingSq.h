@@ -1,5 +1,4 @@
 #include "Game.h"
-#include "PerlinNoise.h"
 #include "OpenSimplexNoise.h"
 
 class MarchingSq : public Game
@@ -13,11 +12,10 @@ private:
     float incr = 0.05f;
     float zoff = 0.0f;
     OSN::Noise<3> noise;
-    // PerlinNoise noise;
 
 
 public:
-    MarchingSq() : Game("Marching Squares", 1000, 900)
+    MarchingSq() : Game("Marching Squares", 1200, 900)
     {
     }
 
@@ -54,7 +52,7 @@ private:
 
     void Render() override
     {
-        // DrawField();
+        DrawField();
 
         DrawMarchingSquares();
 
@@ -66,13 +64,14 @@ private:
         {
             for (size_t j = 0; j < rows; j++)
             {
+                auto remapped = Remap(field[i][j], -1, 1, -0.4f, 0.9f);
 
                 DrawRectangle(
                     i * rez,
                     j * rez,
                     rez,
                     rez,
-                    fill(Remap(field[i][j], -1, 1, -100, 150))
+                    fill(remapped, DARKPURPLE, ORANGE)
                 );
 
             }
