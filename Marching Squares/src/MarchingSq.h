@@ -13,6 +13,7 @@ private:
     float incr = 0.05f;
     float zoff = 0.0f;
     OSN::Noise<3> noise;
+    // PerlinNoise noise;
 
 
 public:
@@ -53,7 +54,7 @@ private:
 
     void Render() override
     {
-        DrawField();
+        // DrawField();
 
         DrawMarchingSquares();
 
