@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "rayutils.h"
 #include <iostream>
 
 class HilbertCurve : public Game
@@ -9,7 +10,7 @@ private:
     int total = n * n;
     std::vector<Vector2> path;
     int counter = 0;
-    float animationSpeed = 50.0f; // Controls the speed of the animation (increase for faster)
+    float animationSpeed = 50.0f;
     float timeElapsed = 0.0f;
 
 public:
@@ -21,7 +22,7 @@ private:
     {
         path.resize(total);
 
-        float len = appWidth / n;  // Calculate length once and apply transformations to the path
+        float len = appWidth / n;
         for (size_t i = 0; i < total; i++)
         {
             path[i] = Hilbert(i);
@@ -33,30 +34,26 @@ private:
 
     void Update(float dt) override
     {
-
-        // Update the time elapsed based on frame time
         timeElapsed += dt * animationSpeed;
 
-        // Only increase the counter if enough time has passed to create an animation effect
         if (timeElapsed >= 1.0f)
         {
-            counter += 1000;
-            timeElapsed = 0.0f;  // Reset time counter
+            counter += 10;
+            timeElapsed = 0.0f;
 
-            // Stop the counter at the total number of points to prevent it from resetting
             if (counter >= total)
-            {
-                counter = 0;
-            }
+                counter = 0; // change to total if you don't want it to restart
         }
     }
 
     void Render() override
     {
         for (size_t i = 0; i < counter; i++)
-        {
-            DrawLineV(path[i], path[i + 1], RAYWHITE);
-        }
+            DrawLineV(
+                path[i],
+                path[i + 1],
+                GetHSVColor(i, total)
+            );
     }
 
     Vector2 Hilbert(int i)

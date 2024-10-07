@@ -48,6 +48,13 @@ Color GetRandomColor(Vector3 seed = { 0 })
 	return Color{ r, g, b, a };
 }
 
+Color GetHSVColor(int step, int total)
+{
+	float h = (float)step / total * 360.0f;
+
+	return ColorFromHSV(h, 1.0f, 1.0f);
+}
+
 //----------------------------------------------------------------------------------
 // Module Functions Definition - Vector2 utils
 //----------------------------------------------------------------------------------
