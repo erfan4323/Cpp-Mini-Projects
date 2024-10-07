@@ -71,7 +71,7 @@ private:
                     j * rez,
                     rez,
                     rez,
-                    fill(remapped, DARKPURPLE, ORANGE)
+                    fill(remapped, DARKBLUE, RED)
                 );
 
             }
