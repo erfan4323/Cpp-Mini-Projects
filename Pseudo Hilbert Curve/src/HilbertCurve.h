@@ -38,11 +38,11 @@ private:
 
         if (timeElapsed >= 1.0f)
         {
-            counter += 10;
+            counter += 20;
             timeElapsed = 0.0f;
-
+            
             if (counter >= total)
-                counter = 0; // change to total if you don't want it to restart
+                counter = total; // change to total if you don't want it to restart
         }
     }
 
