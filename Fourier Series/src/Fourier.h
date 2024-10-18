@@ -10,7 +10,7 @@ private:
     static constexpr int maxHarmonics = 20;         // Number of harmonics
     static constexpr float radiusScale = 100.0f;    // Scale for the radius
     static constexpr float speed = 0.03f;           // Speed of the animation
-    static constexpr float waveOffsetX = 200.0f;    // Offset for the wave drawing
+    static constexpr float waveOffsetX = 250.0f;    // Offset for the wave drawing
 
 public:
     Fourier() : Game("Fourier Series", 1200, 800) {}
@@ -63,6 +63,6 @@ private:
                 );
 
         while (wave.size() > maxWaveSize)
-            wave.erase(wave.begin());
+            wave.erase(wave.end());
     }
 };
