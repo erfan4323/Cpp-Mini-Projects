@@ -6,18 +6,26 @@ private:
     float time = 0.0f;
     std::vector<float> wave;
 
-    static constexpr size_t maxWaveSize = 700;      // Limit for wave size
-    static constexpr int maxHarmonics = 20;         // Number of harmonics
-    static constexpr float radiusScale = 100.0f;    // Scale for the radius
-    static constexpr float speed = 0.03f;           // Speed of the animation
-    static constexpr float waveOffsetX = 250.0f;    // Offset for the wave drawing
+    int maxHarmonics;       // Max harmonics 
+    int radiusScale;      // Radius scale 
+    float speed;            // Speed 
 
 public:
-    Fourier() : Game("Fourier Series", 1200, 800) {}
+
+    Fourier() : Game("Fourier Series", 1200, 800),
+        maxHarmonics(20),
+        radiusScale(100.0f),
+        speed(0.03f)
+    {
+    }
+
     ~Fourier() {}
 
 private:
-    void Update(float dt) override { time -= speed; }
+    void Update(float dt) override
+    {
+        time -= speed;
+    }
 
     void Render() override
     {
@@ -37,32 +45,46 @@ private:
             x += radius * cos(n * time);
             y += radius * sin(n * time);
 
-            Vector2 centerPos = { prevX + circlePos.x, prevY + circlePos.y };
-            Vector2 pointedPos = { x + circlePos.x, y + circlePos.y };
-
-            DrawCircleLinesV(centerPos, radius, { 245, 245, 245, 100 });
-            DrawLineV(centerPos, pointedPos, RAYWHITE);
+            DrawCircleLines(prevX + circlePos.x, prevY + circlePos.y, radius, { 245, 245, 245, 100 });
+            DrawLineV({ prevX + circlePos.x, prevY + circlePos.y }, { x + circlePos.x, y + circlePos.y }, RAYWHITE);
         }
 
-        wave.emplace(wave.begin(), y);
+        wave.insert(wave.begin(), y);
 
         DrawLine(
             x + circlePos.x, y + circlePos.y,
-            circlePos.x + waveOffsetX, wave[0] + circlePos.y,
+            circlePos.x + 200, wave[0] + circlePos.y,
             PURPLE
         );
 
         if (wave.size() > 1)
+        {
             for (size_t i = 0; i < wave.size() - 1; ++i)
+            {
                 DrawLine(
-                    i + circlePos.x + waveOffsetX,
+                    i + circlePos.x + 200,
                     wave[i] + circlePos.y,
-                    (i + 1) + circlePos.x + waveOffsetX,
+                    (i + 1) + circlePos.x + 200,
                     wave[i + 1] + circlePos.y,
                     YELLOW
                 );
+            }
+        }
 
-        while (wave.size() > maxWaveSize)
-            wave.erase(wave.end());
+        while (wave.size() > 1 && (wave.size() - 1 + circlePos.x + 200.0f) < 0)
+        {
+            wave.erase(wave.begin());
+        }
+    }
+
+    void OnGUI() override
+    {
+        ImGui::Begin("Fourier Parameters");
+
+        ImGui::SliderInt("Max Harmonics", &maxHarmonics, 1, 50);
+        ImGui::SliderInt("Radius Scale", &radiusScale, 10.0f, 200.0f);
+        ImGui::SliderFloat("Speed", &speed, 0.01f, 1.0f);
+
+        ImGui::End();
     }
 };
