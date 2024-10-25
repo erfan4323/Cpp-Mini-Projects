@@ -32,14 +32,7 @@ private:
     {
         texture = LoadTextureFromImage(GenImageColor(appWidth, appHeight, RAYWHITE));
 
-        for (size_t x = 0; x < appWidth; x++)
-        {
-            for (size_t y = 0; y < appHeight; y++)
-            {
-                size_t pix = x + y * appWidth;
-                pixels[pix] = WHITE;
-            }
-        }
+        std::fill(pixels.get(), pixels.get() + appWidth * appHeight, WHITE);
 
         for (size_t x = 100; x < 110; x++)
         {
@@ -61,8 +54,8 @@ private:
             {
                 auto a = grid[y][x].x;
                 auto b = grid[y][x].y;
-                nextGrid[y][x].x = a + (da * LaplaceA(x, y)) - (a * b * b) + (feed * (1 - a));
-                nextGrid[y][x].y = b + (db * LaplaceB(x, y)) + (a * b * b) - ((k + feed) * b);
+                nextGrid[y][x].x = a + (da * Laplace(x, y).x) - (a * b * b) + (feed * (1 - a));
+                nextGrid[y][x].y = b + (db * Laplace(x, y).y) + (a * b * b) - ((k + feed) * b);
 
                 nextGrid[y][x].x = Clamp(nextGrid[y][x].x, 0.0f, 1.0f);
                 nextGrid[y][x].y = Clamp(nextGrid[y][x].y, 0.0f, 1.0f);
@@ -99,39 +92,35 @@ private:
         UnloadTexture(texture);
     }
 
-    float LaplaceA(int x, int y)
+    Vector2 Laplace(int x, int y)
     {
-        float sumA = 0.0f;
+        auto a = grid[y][x].x;
+        auto b = grid[y][x].y;
+        float laplaceA = 0.0f;
+        float laplaceB = 0.0f;
 
-        // Calculate Laplace for A
-        sumA += grid[y][x].x * -1.0f;
-        sumA += grid[y - 1][x].x * 0.2f;  // Up
-        sumA += grid[y + 1][x].x * 0.2f;  // Down
-        sumA += grid[y][x - 1].x * 0.2f;  // Left
-        sumA += grid[y][x + 1].x * 0.2f;  // Right
-        sumA += grid[y - 1][x - 1].x * 0.05f; // Top Left
-        sumA += grid[y + 1][x + 1].x * 0.05f; // Bottom Right
-        sumA += grid[y + 1][x - 1].x * 0.05f; // Bottom Left
-        sumA += grid[y - 1][x + 1].x * 0.05f; // Top Right
+        for (int dy = -1; dy <= 1; dy++)
+        {
+            for (int dx = -1; dx <= 1; dx++)
+            {
+                if (dx == 0 && dy == 0) // Center
+                {
+                    laplaceA -= a;
+                    laplaceB -= b;
+                }
+                else if (abs(dx) + abs(dy) == 1) // Direct neighbors
+                {
+                    laplaceA += grid[y + dy][x + dx].x * 0.2f;
+                    laplaceB += grid[y + dy][x + dx].y * 0.2f;
+                }
+                else // Diagonal neighbors
+                {
+                    laplaceA += grid[y + dy][x + dx].x * 0.05f;
+                    laplaceB += grid[y + dy][x + dx].y * 0.05f;
+                }
+            }
+        }
 
-        return sumA; // Return the result
-    }
-
-    float LaplaceB(int x, int y)
-    {
-        float sumB = 0.0f;
-
-        // Calculate Laplace for B
-        sumB += grid[y][x].y * -1.0f;
-        sumB += grid[y - 1][x].y * 0.2f;  // Up
-        sumB += grid[y + 1][x].y * 0.2f;  // Down
-        sumB += grid[y][x - 1].y * 0.2f;  // Left
-        sumB += grid[y][x + 1].y * 0.2f;  // Right
-        sumB += grid[y - 1][x - 1].y * 0.05f; // Top Left
-        sumB += grid[y + 1][x + 1].y * 0.05f; // Bottom Right
-        sumB += grid[y + 1][x - 1].y * 0.05f; // Bottom Left
-        sumB += grid[y - 1][x + 1].y * 0.05f; // Top Right
-
-        return sumB; // Return the result
+        return { laplaceA, laplaceB };
     }
 };
