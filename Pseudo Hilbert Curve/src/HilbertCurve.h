@@ -7,6 +7,7 @@ class HilbertCurve : public Game
 private:
     int order = 7;
     int n = pow(2, order);
+         
     int total = n * n;
     std::vector<Vector2> path;
     int counter = 0;
@@ -35,7 +36,7 @@ private:
     void Update(float dt) override
     {
         timeElapsed += dt * animationSpeed;
-
+        
         if (timeElapsed >= 1.0f)
         {
             counter += 20;
@@ -104,6 +105,7 @@ private:
 
     void Debug(const std::vector<Vector2>& path, size_t i)
     {
+      
         DrawCircle(path[i].x, path[i].y, 5, RED);
         std::string pointNumber = std::to_string(i);
         DrawText(pointNumber.c_str(), path[i].x + 10, path[i].y - 10, 10, RAYWHITE);
