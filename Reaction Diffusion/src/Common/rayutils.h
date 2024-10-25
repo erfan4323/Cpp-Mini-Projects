@@ -55,6 +55,53 @@ Color GetRandomColor(Vector3 seed = { 0 })
 	return Color{ r, g, b, a };
 }
 
+// Generates rainbow colors
+Color GetRainbowColor(float t)
+{
+	t = fmodf(t, 1.0f);
+
+	float r = 0.0f, g = 0.0f, b = 0.0f;
+
+	float scaledT = t * 6.0f;
+	int segment = static_cast<int>(scaledT);
+
+	switch (segment) {
+	case 0:
+		r = 1.0f; 						// Red to Yellow
+		g = scaledT;
+		break;
+	case 1:
+		r = 1.0f - (scaledT - 1.0f);	// Yellow to Green
+		g = 1.0f;
+		break;
+	case 2:
+		g = 1.0f; 						// Green to Cyan
+		b = scaledT - 2.0f;
+		break;
+	case 3:
+		g = 1.0f - (scaledT - 3.0f);	// Cyan to Blue
+		b = 1.0f;
+		break;
+	case 4:
+		r = scaledT - 4.0f; 			// Blue to Magenta
+		b = 1.0f;
+		break;
+	case 5:
+		r = 1.0f; 						// Magenta to Red
+		b = 1.0f - (scaledT - 5.0f);
+		break;
+	default:
+		break;
+	}
+
+	return {
+		static_cast<unsigned char>(r * 255),
+		static_cast<unsigned char>(g * 255),
+		static_cast<unsigned char>(b * 255),
+		255
+	};
+}
+
 Color GetHSVColor(int step, int total)
 {
 	float h = (float)step / total * 360.0f;

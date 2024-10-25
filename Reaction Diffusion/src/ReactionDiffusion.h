@@ -30,9 +30,9 @@ public:
 private:
     void OnCreate() override
     {
-        texture = LoadTextureFromImage(GenImageColor(appWidth, appHeight, RAYWHITE));
+        texture = LoadTextureFromImage(GenImageColor(appWidth, appHeight, DEFAULTBG));
 
-        std::fill(pixels.get(), pixels.get() + appWidth * appHeight, WHITE);
+        std::fill(pixels.get(), pixels.get() + appWidth * appHeight, DEFAULTBG);
 
         for (size_t x = 100; x < 110; x++)
         {
@@ -83,7 +83,7 @@ private:
             }
         }
         UpdateTexture(texture, pixels.get());
-        DrawTexture(texture, 0, 0, WHITE);
+        DrawTexture(texture, 0, 0, DEFAULTBG);
         std::swap(grid, nextGrid);
     }
 
